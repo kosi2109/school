@@ -1,0 +1,53 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<h1>ClassRoom</h1>
+Major : {{room_details.major}}  Year : {{room_details.year.name}} Name : {{room_details.name}}
+ Password : {{room_details.password}}
+<div id="display" ></div>
+
+
+{% if room_details.can_join == True%}
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		setInterval(function(){
+		$.ajax({
+			type: 'GET',
+			url : "/getStudents/{{room_details.name}}/",
+			success: function(response){
+			console.log(response.student)
+			$("#display").empty();
+				for (var key in response.student){	        
+					var temp=`<div><h3>`+response.student[key].name+"</h3></b><h4>"+response.student[key].major+"</h4></b><h4>" +response.student[key].year+"</h4></b><h4 style='border-bottom: 1px solid black' >" +response.student[key].roll+ "</h4></div>";
+						                $("#display").append(temp);
+					}
+				},
+			error: function(response){
+				console.log(response)}
+			});
+		},1000);
+	})
+</script>
+
+{% elif room_details.can_join == False %}
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		
+		$.ajax({
+			type: 'GET',
+			url : "/getStudents/{{room_details.name}}/",
+			success: function(response){
+			console.log(response.student)
+			$("#display").empty();
+				for (var key in response.student){	        
+					var temp=`<div style="max-height: 90vh;padding: 10px;overflow-y: scroll;" class="bg-light"><h3>`+response.student[key].name+"</h3></b><h4>"+response.student[key].major+"</h4></b><h4>" +response.student[key].year+"</h4></b><h4>" +response.student[key].roll+ "</h4></div>";
+					$("#display").append(temp);
+					}
+				},
+			error: function(response){
+				console.log(response)}
+		},);
+	})
+</script>
+
+{% endif %}

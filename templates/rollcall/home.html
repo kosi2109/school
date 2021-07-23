@@ -1,0 +1,173 @@
+{% extends 'rollcall/base.html' %}
+
+{% block title %}
+	Home
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+      <div class="menu">
+        <div class="menu_join" data-section="join"><h5>Join</h5></div>
+        <div class="menu_home" data-section="home"><h5>Home</h5></div>
+        <div class="profile" data-section="profile">
+          <h5>Profile</h5>
+        </div>
+      </div>
+      
+      <section class="join" id="join">
+      	{% if student %}
+      	<div>	
+    
+      		<form method="POST">
+      			{% csrf_token %}
+      			<input type="text"  id="room_name" name="room_name">
+      			<input type="password" id="room_password" name="room_password">
+      			<input type="submit" name="">
+      		</form>
+      		<div id="class-detail">
+      			{{classroom}}
+      		</div>
+      		
+      			
+
+      	</div>
+      	{% endif %}
+      	{% if teacher %}
+      	<div class="create-form">	
+      			<form method="POST">
+      				{% csrf_token %}	
+      				{{form.as_p}}
+      				<input type="Submit" name="Submit">
+      			</form>
+      	</div>
+        <div class="row">
+          <div
+            class="col-lg-12"
+            style="
+              width: 100%;
+              height: 100vh;
+              overflow-y: scroll;
+              padding-bottom: 170px;
+            "
+          >
+            <div class="post-container" style="background-color: inherit">
+              <button class="btn btn-md btn-outline-primary sticky-top" id="form-btn">
+                Create
+              </button>
+              {% for i in classroom %}
+              <div class="class-container">
+                <h4>{{i.major}}</h4>
+                <h4>{{i.year}}</h4>
+                <h4>{{i.start}}</h4>
+                <h4><a href="{% url 'rollcall:classDetail' i.name %}">View</a></h4>
+              </div>
+             {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </section>
+
+      <section class="home" id="home">
+        <div class="row">
+          <div class="col-lg-2"></div>
+          <div
+            class="col-lg-8"
+            style="overflow-y: scroll; height: 100vh; padding-bottom: 170px"
+          >
+            <div class="post-container">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+                ratione libero aspernatur maiores inventore similique veniam rem
+                quo laborum numquam!
+              </div>
+            </div>
+            <div class="post-container">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus,
+                expedita cupiditate quod fuga, error omnis veniam autem totam
+                quibusdam quia ex ipsam numquam architecto aut dolorem non?
+                Modi, laborum harum atque autem optio sint incidunt in animi,
+                deserunt, architecto aperiam? Quo cum et exercitationem quam
+                quas ut possimus quidem. Ad.
+              </div>
+            </div>
+            <div class="post-container">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus,
+                expedita cupiditate quod fuga, error omnis veniam autem totam
+                quibusdam quia ex ipsam numquam architecto aut dolorem non?
+                Modi, laborum harum atque autem optio sint incidunt in animi,
+                deserunt, architecto aperiam? Quo cum et exercitationem quam
+                quas ut possimus quidem. Ad. Lorem ipsum dolor, sit amet
+                consectetur adipisicing elit. Excepturi nihil beatae assumenda,
+                quis quia laudantium accusamus omnis quidem velit saepe
+                aspernatur perferendis vero, sequi sed, debitis a? Ipsam, soluta
+                vitae!
+              </div>
+            </div>
+            <div class="post-container">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus,
+                expedita cupiditate quod fuga, error omnis veniam autem totam
+                quibusdam quia ex ipsam numquam architecto aut dolorem non?
+                Modi, laborum harum atque autem optio sint incidunt in animi,
+                deserunt, architecto aperiam? Quo cum et exercitationem quam
+                quas ut possimus quidem. Ad. Lorem ipsum dolor, sit amet
+                consectetur adipisicing elit. Excepturi nihil beatae assumenda,
+                quis quia laudantium accusamus omnis quidem velit saepe
+                aspernatur perferendis vero, sequi sed, debitis a? Ipsam, soluta
+                vitae!
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2"></div>
+        </div>
+      </section>
+      <section class="pf" id="profile">
+        <div class="profile-container">
+          <div class="pf-img-container">
+            <img src="profile.png" alt="" />
+          </div>
+          <div class="pf-detail-container">
+          	{% if teacher %}
+            <div class="default">
+
+              <h4>Name</h4>
+              <h4>Major</h4>
+              <h4>Post</h4>
+            </div>
+            <div class="detail">
+
+              <h4>{{teacher.name}}</h4>
+              <h4>{{teacher.major}}</h4>
+              <h4>{{teacher.post}}</h4>
+              
+            </div>
+            {% endif %}
+
+            {% if student %}
+            <div class="default">
+
+              <h4>Name</h4>
+              <h4>Major</h4>
+              <h4>Year</h4>
+              <h4>Roll No.</h4>
+          
+            </div>
+            <div class="detail">
+
+              <h4>{{student.name}}</h4>
+              <h4>{{student.major}}</h4>
+              <h4>{{student.year}}</h4>
+              <h4>{{student.roll}}</h4>
+             
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+    </div>
+
+
+{% endblock %}

@@ -1,79 +1,177 @@
 {% extends 'rollcall/base.html' %}
-
 {% block title %}
-	Home
+ Home 
 {% endblock %}
+{%block content %}
+<div class="container-fluid p-0 m-0">
 
-{% block content %}
-	<div class="container">
-      <div class="menu">
-        <div class="menu_join" data-section="join"><h5>Join</h5></div>
-        <div class="menu_home" data-section="home"><h5>Home</h5></div>
-        <div class="profile" data-section="profile">
-          <h5>Profile</h5>
+  <!-- Bottom Menu -->
+  <div class="menu">
+    <div class="menu_join" data-section="join"><h5>{% if student %}
+    Join {% else %} Create {% endif %}</h5></div>
+    <div class="menu_home" data-section="home"><h5>Home</h5></div>
+    <div class="profile" data-section="profile">
+      <h5>Profile</h5>
+    </div>
+  </div>
+  <!-- End Bottom Menu -->
+
+
+
+  <!-- Create/Join Section -->
+  <section class="join" id="join">
+
+    <!-- Join section for Students -->
+    {% if student %}
+    <div>
+      <div class="scan-container">
+        <video id="preview"></video>
+        <div class="form-check form-switch" style="position: absolute;bottom: 10px;left: 10px;">
+          <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" id="camera" onchange="handleChange()">
+          <label class="form-check-label" for="flexSwitchCheckChecked">Camera</label>
         </div>
       </div>
-      
-      <section class="join" id="join">
-      	{% if student %}
-      	<div>	
-    
-      		<form method="POST">
-      			{% csrf_token %}
-      			<input type="text"  id="room_name" name="room_name">
-      			<input type="password" id="room_password" name="room_password">
-      			<input type="submit" name="">
-      		</form>
-      		<div id="class-detail">
-      			{{classroom}}
-      		</div>
-      		
-      			
+     
 
-      	</div>
-      	{% endif %}
-      	{% if teacher %}
-      	<div class="create-form">	
-      			<form method="POST">
-      				{% csrf_token %}	
-      				{{form.as_p}}
-      				<input type="Submit" name="Submit">
-      			</form>
-      	</div>
-        <div class="row">
-          <div
-            class="col-lg-12"
-            style="
-              width: 100%;
-              height: 100vh;
-              overflow-y: scroll;
-              padding-bottom: 170px;
-            "
-          >
-            <div class="post-container" style="background-color: inherit">
-              <button class="btn btn-md btn-outline-primary sticky-top" id="form-btn">
-                Create
-              </button>
-              {% for i in classroom %}
-              <div class="class-container">
-                <h4>{{i.major}}</h4>
-                <h4>{{i.year}}</h4>
-                <h4>{{i.start}}</h4>
-                <h4><a href="{% url 'rollcall:classDetail' i.name %}">View</a></h4>
+     <form method="POST" style="position: absolute;top: 10vh !important;right: 0 !important;display: none;">
+      {% csrf_token %}
+       <input type="text" name="room_name" id="room_name">
+       <input  type="password" name="room_password" id="room_password">
+       <input type="submit" id="room_submit">
+     </form>
+
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script type="text/javascript">
+      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+      var clicked = false;
+      function handleChange(){
+        clicked = !clicked;
+
+        if (clicked === false){
+          scanner.stop();
+        }
+        else{
+          Instascan.Camera.getCameras().then(function (cameras) {
+          if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+          } else {
+            console.error('No cameras found.');
+          }
+          }).catch(function (e) {
+          console.error(e);
+          });
+
+          scanner.addListener('scan', function (content) {
+            const obj = JSON.parse(content);
+            const room_name = obj.name
+            const room_password = obj.password
+            const name = document.getElementById('room_name')
+            const password = document.getElementById('room_password')
+            if (content){
+              scanner.stop();
+              name.value = room_name;
+              password.value = room_password;
+              document.getElementById("room_submit").click();
+            }
+          });
+        }
+
+      };
+      
+
+      
+    </script>
+    {% endif %}
+    <!-- End Join section for Students -->
+
+
+    <!-- Create section for Teachers -->
+    {% if teacher %}
+    
+    <div class="row">
+      <div class="form-lee">
+              <form method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" name="">
+              </form>
+      </div>
+      <div class="col-lg-3"> </div>
+      <div
+        class="col-12 col-lg-6"
+        style="overflow-y: scroll; height: 80vh;"
+      >
+         <button class="create-btn">Create</button>
+
+        <div class="class-post-container">
+
+          {% for i in classroom %}
+          
+            <a href="{% url 'rollcall:classDetail' i.name %}">
+              <div class="class-container shadow">
+              <h4 class="text-start">{{i.major}}</h4>
+              <h4 class="text-start">{{i.year}}</h4>
+              <h4 class="text-end">{{i.start}}</h4>
               </div>
-             {% endfor %}
+            </a>
+          
+          {% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-3"> </div>
+    </div>
+    {% endif %}
+    <!-- End Create section for Teacher -->
+  </section>
+  <!-- End Create/Join Section -->
+
+  <!-- Home -->
+  <section class="home" id="home">
+    <div class="row"  style="overflow-y: scroll; height: 80vh; padding: 20px">
+      <div class="col-0"></div>
+          <div
+            class="col-12 mb-3 d-flex justify-content-center align-items-center"
+          >
+            <div class="post-container shadow">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+                ratione libero aspernatur maiores inventore similique veniam rem
+                quo laborum numquam!
+              </div>
             </div>
           </div>
-        </div>
-        {% endif %}
-      </section>
-
-      <section class="home" id="home">
-        <div class="row">
-          <div class="col-lg-2"></div>
           <div
-            class="col-lg-8"
-            style="overflow-y: scroll; height: 100vh; padding-bottom: 170px"
+            class="col-12 mb-3 d-flex justify-content-center align-items-center"
+          >
+            <div class="post-container shadow">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+                ratione libero aspernatur maiores inventore similique veniam rem
+                quo laborum numquam!
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 mb-3 d-flex justify-content-center align-items-center"
+          >
+            <div class="post-container shadow">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+                ratione libero aspernatur maiores inventore similique veniam rem
+                quo laborum numquam!Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.  
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 mb-3 d-flex justify-content-center align-items-center"
           >
             <div class="post-container">
               <div class="post-content">
@@ -82,92 +180,74 @@
                 quo laborum numquam!
               </div>
             </div>
+          </div>
+          <div
+            class="col-12 mb-3 d-flex justify-content-center align-items-center"
+          >
             <div class="post-container">
               <div class="post-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus,
-                expedita cupiditate quod fuga, error omnis veniam autem totam
-                quibusdam quia ex ipsam numquam architecto aut dolorem non?
-                Modi, laborum harum atque autem optio sint incidunt in animi,
-                deserunt, architecto aperiam? Quo cum et exercitationem quam
-                quas ut possimus quidem. Ad.
-              </div>
-            </div>
-            <div class="post-container">
-              <div class="post-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus,
-                expedita cupiditate quod fuga, error omnis veniam autem totam
-                quibusdam quia ex ipsam numquam architecto aut dolorem non?
-                Modi, laborum harum atque autem optio sint incidunt in animi,
-                deserunt, architecto aperiam? Quo cum et exercitationem quam
-                quas ut possimus quidem. Ad. Lorem ipsum dolor, sit amet
-                consectetur adipisicing elit. Excepturi nihil beatae assumenda,
-                quis quia laudantium accusamus omnis quidem velit saepe
-                aspernatur perferendis vero, sequi sed, debitis a? Ipsam, soluta
-                vitae!
-              </div>
-            </div>
-            <div class="post-container">
-              <div class="post-content">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus,
-                expedita cupiditate quod fuga, error omnis veniam autem totam
-                quibusdam quia ex ipsam numquam architecto aut dolorem non?
-                Modi, laborum harum atque autem optio sint incidunt in animi,
-                deserunt, architecto aperiam? Quo cum et exercitationem quam
-                quas ut possimus quidem. Ad. Lorem ipsum dolor, sit amet
-                consectetur adipisicing elit. Excepturi nihil beatae assumenda,
-                quis quia laudantium accusamus omnis quidem velit saepe
-                aspernatur perferendis vero, sequi sed, debitis a? Ipsam, soluta
-                vitae!
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+                ratione libero aspernatur maiores inventore similique veniam rem
+                quo laborum numquam!
               </div>
             </div>
           </div>
-          <div class="col-lg-2"></div>
-        </div>
-      </section>
-      <section class="pf" id="profile">
-        <div class="profile-container">
-          <div class="pf-img-container">
-            <img src="profile.png" alt="" />
+          <div
+            class="col-12 mb-3 d-flex justify-content-center align-items-center"
+          >
+            <div class="post-container">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+                ratione libero aspernatur maiores inventore similique veniam rem
+                quo laborum numquam!
+              </div>
+            </div>
           </div>
-          <div class="pf-detail-container">
-          	{% if teacher %}
-            <div class="default">
-
-              <h4>Name</h4>
-              <h4>Major</h4>
-              <h4>Post</h4>
-            </div>
-            <div class="detail">
-
-              <h4>{{teacher.name}}</h4>
-              <h4>{{teacher.major}}</h4>
-              <h4>{{teacher.post}}</h4>
-              
-            </div>
-            {% endif %}
-
-            {% if student %}
-            <div class="default">
-
-              <h4>Name</h4>
-              <h4>Major</h4>
-              <h4>Year</h4>
-              <h4>Roll No.</h4>
-          
-            </div>
-            <div class="detail">
-
-              <h4>{{student.name}}</h4>
-              <h4>{{student.major}}</h4>
-              <h4>{{student.year}}</h4>
-              <h4>{{student.roll}}</h4>
-             
-            </div>
-            {% endif %}
-          </div>
-        </div>
-      </section>
+          <div class="col-0"></div>
     </div>
+  </section>
 
+  <!-- ENd Home -->
+
+  <!-- Profile Section -->
+  <section class="pf" id="profile">
+    <div class="profile-container shadow">
+      <div class="pf-img-container">
+        <img src="profile.png" alt="" />
+      </div>
+      <div class="pf-detail-container">
+        {% if teacher %}
+        <div class="default">
+          <h4>Name</h4>
+          <h4>Major</h4>
+          <h4>Post</h4>
+        </div>
+        <div class="detail">
+          <h4>{{teacher.name}}</h4>
+          <h4>{{teacher.major}}</h4>
+          <h4>{{teacher.post}}</h4>
+        </div>
+        {% endif %} {% if student %}
+        <div class="default">
+          <h4>Name</h4>
+          <h4>Major</h4>
+          <h4>Year</h4>
+          <h4>Roll No.</h4>
+        </div>
+        <div class="detail">
+          <h4>{{student.name}}</h4>
+          <h4>{{student.major}}</h4>
+          <h4>{{student.year}}</h4>
+          <h4>{{student.roll}}</h4>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  <!-- ENd Profile Section -->
+
+
+
+</div>
 
 {% endblock %}

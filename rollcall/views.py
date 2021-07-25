@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import RoomForm
 from django.http import JsonResponse
 import json
+
 """Login / out"""
 
 def userLogin(request):
@@ -80,13 +81,15 @@ def home(request):
 			form = RoomForm(request.POST)
 			if form.is_valid():
 				form.save()
-
-
+				form = RoomForm()
+				return redirect('rollcall:home')
+		
 		classroom = teacher.classroom_set.all() 
-		ctx = {'classroom':classroom,'form':form,'teacher':teacher}
+		ctx = {'classroom':classroom,'teacher':teacher,'form':form}
 		return render(request , 'rollcall/home.html',ctx)
 
-	
+
+
 #8E1ABF
 def join(request):
 	data = json.loads(request.body)
@@ -96,7 +99,6 @@ def join(request):
 	if action == 'join':
 		classroom = ClassRoom.objects.get(id=room)
 		joined = Join_Room.objects.filter(class_rom=classroom,student=student).count()
-		print(joined)
 		if joined == 0:
 			Join_Room.objects.create(class_rom=classroom, student=student)
 			return HttpResponse('joined')
@@ -134,3 +136,4 @@ def getStudents(request , room):
 	return JsonResponse({"student":students})
 
 """ENd """
+

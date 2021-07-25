@@ -5,20 +5,28 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
-
-    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}" />
     <title>Login</title>
   </head>
 
   <body>
-    <form method="POST">
-      {% csrf_token %}
-      <input type="text" name="username">
-      <input type="password" name="password">
-      <input type="submit" name="submit">
-
-    </form>
+    <div class="login-container">
+      <h1 class="logo">Monywa University Of Economic</h1>
+      <div class="form-container">
+        <h2>Login</h2>
+        <form method="POST">
+          {% csrf_token %}
+          <input
+            type="text"
+            name="username"
+            placeholder="Username"
+            autocomplete="off"
+          />
+          <input type="password" name="password" placeholder="Password" />
+          <button type="submit">Login</button>
+        </form>
+        <h5><a href="">Forget Password ?</a></h5>
+      </div>
+    </div>
   </body>
- 
 </html>

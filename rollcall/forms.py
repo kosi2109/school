@@ -19,5 +19,5 @@ class CustomUserChangeForm(UserChangeForm):
 class RoomForm(forms.ModelForm):
 	class Meta:
 		model = ClassRoom
-		fields ='__all__'
+		exclude = '__all__'
 

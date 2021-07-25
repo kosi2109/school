@@ -1,0 +1,141 @@
+{% extends 'rollcall/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="container-fluid p-0 m-0">
+      <div class="menu">
+        <div class="menu_join" data-section="join"><h5>Join</h5></div>
+        <div class="menu_home" data-section="home"><h5>Home</h5></div>
+        <div class="profile" data-section="profile">
+          <h5>Profile</h5>
+        </div>
+      </div>
+      <section class="join" id="join">
+        <div class="row">
+          <div
+            class="col-md-12"
+            style="overflow-y: scroll; height: 80vh; margin-top: 10vh"
+          >
+            <button class="create-btn">Create</button>
+            <div class="create-from">
+              <form action="">
+                <input type="text" /> <input type="text" />
+
+                <input type="text" />
+                <input type="checkbox" />
+                <button>Create</button>
+              </form>
+            </div>
+            <div class="class-post-container" style="background-color: inherit">
+              <div class="class-container">
+                <h4>Major</h4>
+                <h4>Year</h4>
+                <h4>12/5/2020</h4>
+                <h4>View</h4>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+      <section class="home active" id="home">
+        <div
+          class="row"
+          style="overflow-y: scroll; height: 80vh; padding: 20px"
+        >
+          <div class="col-0"></div>
+          <div
+            class="col-12 mb-3 d-flex justify-content-center align-items-center"
+          >
+            <div class="post-container">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+                ratione libero aspernatur maiores inventore similique veniam rem
+                quo laborum numquam!
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 mb-3 d-flex justify-content-center align-items-center"
+          >
+            <div class="post-container">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+                ratione libero aspernatur maiores inventore similique veniam rem
+                quo laborum numquam!
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 mb-3 d-flex justify-content-center align-items-center"
+          >
+            <div class="post-container">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+                ratione libero aspernatur maiores inventore similique veniam rem
+                quo laborum numquam!
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 mb-3 d-flex justify-content-center align-items-center"
+          >
+            <div class="post-container">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+                ratione libero aspernatur maiores inventore similique veniam rem
+                quo laborum numquam!
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 mb-3 d-flex justify-content-center align-items-center"
+          >
+            <div class="post-container">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+                ratione libero aspernatur maiores inventore similique veniam rem
+                quo laborum numquam!
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-12 mb-3 d-flex justify-content-center align-items-center"
+          >
+            <div class="post-container">
+              <div class="post-content">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia
+                ratione libero aspernatur maiores inventore similique veniam rem
+                quo laborum numquam!
+              </div>
+            </div>
+          </div>
+          <div class="col-0"></div>
+        </div>
+      </section>
+      <section class="pf" id="profile">
+        <div class="profile-container">
+          <div class="pf-img-container">
+            <img src="profile.png" alt="" />
+          </div>
+          <div class="pf-detail-container">
+            <div class="default">
+              <h4>Name</h4>
+              <h4>Major</h4>
+              <h4>Year</h4>
+              <h4>Roll No.</h4>
+            </div>
+            <div class="detail">
+              <h4>Si Thu Htet</h4>
+              <h4>BBA</h4>
+              <h4>Fouth Year</h4>
+              <h4>Sasama 100</h4>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  
+{% endblock %}

@@ -92,9 +92,11 @@ body {
 .home {
   opacity: 0;
   pointer-events: none;
-  height: 80vh;
+  min-height: 80vh;
   transition: all 0.2s ease;
   display: none;
+  max-width: 100vw;
+
 }
 
 .active {
@@ -368,6 +370,10 @@ body {
   width: 33%;
 }
 
+.post-container{
+  position: relative;
+  width: 100%;
+}
 
 @media screen and (min-width: 370px){
   .scan-container{

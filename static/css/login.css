@@ -122,3 +122,13 @@ a {
     font-size: 0.7rem;
   }
 }
+
+@media screen and (max-height: 400px){
+  .logo{
+    display: none;
+  }
+  .form-container{
+    width: 100%;
+    height: 100%;
+  }
+}

@@ -7,7 +7,7 @@ from django.core.files import File
 from PIL import Image, ImageDraw
 import uuid
 import json
-
+from ckeditor.fields import RichTextField
 
 class UserNew(AbstractUser):
 	is_teacher = models.BooleanField(default=False)
@@ -44,15 +44,15 @@ class Teacher(models.Model):
 	name = models.CharField(max_length=200 , null=True)
 	major = models.ForeignKey(Major , on_delete=models.CASCADE,null=True)
 	post =  models.ForeignKey(Post , on_delete=models.CASCADE,null=True)
-	def __str__(self):
-		return f'{self.name} => {self.major} => {self.post}'
+	
+
 
 class Student(models.Model):
 	user = models.OneToOneField(UserNew , on_delete=models.CASCADE ,related_name = 'student',primary_key=True)
 	name = models.CharField(max_length=200 , null=True)
 	major = models.ForeignKey(Major , on_delete=models.CASCADE,null=True)
 	year = models.ForeignKey(Year , on_delete=models.CASCADE,null=True)
-	roll = models.CharField(max_length=200 , null=True)
+	roll = models.CharField(max_length=200 , null=True,unique=True)
 	def __str__(self):
 		return f'{self.name} => {self.major} => {self.year}'
 
@@ -101,6 +101,19 @@ class Join_Room(models.Model):
 
 	def __str__(self):
 		return f'{self.student} => {self.class_rom}'
+
+
+class PostArticle(models.Model):
+	post = models.ForeignKey(Teacher , on_delete=models.CASCADE,null=True,related_name='postarticle')
+	content = RichTextField(blank=True,null=True)
+	slug = models.CharField(max_length=10,editable = False ,unique=True)
+	date = models.DateTimeField(auto_now_add=timezone.now)
+	def save(self,*args , **kwargs):
+		if not self.slug:
+			self.slug = uuid.uuid4().hex[:10]
+			while PostArticle.objects.filter(slug=self.slug).exists():
+				self.slug = uuid.uuid4().hex[:10]
+		super().save(*args, **kwargs)
 
 
 

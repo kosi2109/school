@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 # Create your views here.
-from .forms import RoomForm
+from .forms import RoomForm,PostForm
 from django.http import JsonResponse
 import json
 
@@ -40,9 +40,10 @@ def userLogout(request):
 """Home"""
 @login_required(login_url='rollcall:login')
 def home(request):
+
 	user = request.user
 	if request.user.is_student:
-
+		postarticle = PostArticle.objects.all()
 		student = Student.objects.get(user=user)
 		if request.method == "POST":
 			room_name = request.POST.get("room_name")
@@ -72,23 +73,46 @@ def home(request):
 			else:
 				messages = "This room is not exist"
 				return render(request,'rollcall/error.html',{'messages':messages})
-		ctx = {'type':"std",'student':student}
+		ctx = {'type':"std",'student':student,'postarticle':postarticle}
 		return render(request , 'rollcall/home.html',ctx)
 	else:
+		postarticle = PostArticle.objects.all()
 		teacher = Teacher.objects.get(user=user)
 		form = RoomForm()
 		if request.method == "POST":
 			form = RoomForm(request.POST)
 			if form.is_valid():
-				form.save()
-				form = RoomForm()
+				major = form.cleaned_data['major']
+				year = form.cleaned_data['year']
+				subject = form.cleaned_data['subject']
+				password = form.cleaned_data['password']
+				tea = request.user.teacher
+				ClassRoom.objects.create(
+					major=major,
+					year=year,
+					subject=subject,
+					password=password,
+					teacher=tea
+					)
 				return redirect('rollcall:home')
 		
 		classroom = teacher.classroom_set.all() 
-		ctx = {'classroom':classroom,'teacher':teacher,'form':form}
+		ctx = {'classroom':classroom,'teacher':teacher,'form':form,'postarticle':postarticle}
 		return render(request , 'rollcall/home.html',ctx)
 
 
+
+def post(request):
+	post = request.user.teacher
+	form = PostForm()
+	if request.method == 'POST' or None:
+		form = PostForm(request.POST)
+		print(request.POST)
+		if form.is_valid():
+			form.save()
+			return redirect('rollcall:home')
+
+	return render(request,'rollcall/post.html',{'form':form,'post':post})
 
 #8E1ABF
 def join(request):
@@ -112,7 +136,7 @@ def join(request):
 
 
 def joined(request):
-
+	
 
 	return render(request , 'rollcall/joined.html')
 """End Home"""
@@ -132,8 +156,26 @@ def getStudents(request , room):
 	students= []
 	for i in students_joined:
 		students.append({'name':i.student.name,'major':i.student.major.name,'roll':i.student.roll,'year':i.student.year.name})
-	print(students)
 	return JsonResponse({"student":students})
 
 """ENd """
+
+
+"""Room stert / end"""
+
+def door(request):
+	data = json.loads(request.body)
+	action = data['action']
+	slug = data['slug']
+	room = ClassRoom.objects.get(name=slug)
+	if action == 'door':
+		if room.can_join == True:
+			room.can_join = False
+			room.save()
+			print('to false')
+		else:
+			room.can_join = True
+			room.save()
+			print('to true')
+	return JsonResponse('done' ,safe=False)
 

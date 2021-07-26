@@ -1,14 +1,37 @@
+{% extends 'rollcall/base.html' %}
+
+
+{% block content %}
+
+<div class="container p-4" >
+  <div class="row shadow p-1" style="min-height: 100vh;">
+    <div class="col-md-4 brc">
+      <div class="bac" style="width: 100%;height: auto;">
+        <img style="width: 100%;height: 100%;" src="{{room_details.qr_code.url}}">
+      </div>
+      <h3 class="text-center">Major - {{room_details.major}}</h3>
+      <h3 class="text-center">Year - {{room_details.year.name}}</h3>
+      <div class="form-check form-switch d-flex justify-content-center align-items-center">
+        <input id="door" data-door="door" class="form-check-input me-2" type="checkbox" id="flexSwitchCheckChecked" {% if room_details.can_join %} checked {% endif %} >
+        <label class="form-check-label" for="flexSwitchCheckChecked">End/Start</label>
+      </div>
+     
+    </div>
+    <div class="col-md-8 my-3 students" style="min-height: 100vh;position: relative;">
+      <div id="display" style="width: 100%;"></div>
+    </div>
+  </div>
+</div>
+
+
+
 <script
   src="https://code.jquery.com/jquery-3.6.0.min.js"
   integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
   crossorigin="anonymous"
 ></script>
-<h1>ClassRoom</h1>
-Major : {{room_details.major}} Year : {{room_details.year.name}} Name :
-{{room_details.name}} Password : {{room_details.password}}
 
-<img src="{{room_details.qr_code.url}}">
-<div id="display"></div>
+
 
 {% if room_details.can_join == True%}
 <script type="text/javascript">
@@ -18,20 +41,17 @@ Major : {{room_details.major}} Year : {{room_details.year.name}} Name :
         type: "GET",
         url: "/getStudents/{{room_details.name}}/",
         success: function (response) {
-          console.log(response.student);
           $("#display").empty();
+          var num = 1
           for (var key in response.student) {
             var temp =
-              `<div><h3>` +
+              `<div class="joinedStudent"><h4>${num}</h4><h4>` +
               response.student[key].name +
-              "</h3></b><h4>" +
-              response.student[key].major +
-              "</h4></b><h4>" +
-              response.student[key].year +
-              "</h4></b><h4 style='border-bottom: 1px solid black' >" +
+              "</h4><h4>" +
               response.student[key].roll +
               "</h4></div>";
             $("#display").append(temp);
+            num += 1 ;
           }
         },
         error: function (response) {
@@ -49,20 +69,17 @@ Major : {{room_details.major}} Year : {{room_details.year.name}} Name :
       type: "GET",
       url: "/getStudents/{{room_details.name}}/",
       success: function (response) {
-        console.log(response.student);
         $("#display").empty();
+        var num = 1
         for (var key in response.student) {
           var temp =
-            `<div style="max-height: 90vh;padding: 10px;overflow-y: scroll;" class="bg-light"><h3>` +
-            response.student[key].name +
-            "</h3></b><h4>" +
-            response.student[key].major +
-            "</h4></b><h4>" +
-            response.student[key].year +
-            "</h4></b><h4>" +
+            `<div class="joinedStudent"><h4>${num}</h4><h4>`+
+             response.student[key].name +
+            "</h4><h4>"+
             response.student[key].roll +
             "</h4></div>";
           $("#display").append(temp);
+          num += 1;
         }
       },
       error: function (response) {
@@ -72,4 +89,42 @@ Major : {{room_details.major}} Year : {{room_details.year.name}} Name :
   });
 </script>
 
+
+
+
 {% endif %}
+<script type="text/javascript">
+  const doorBtn = document.getElementById('door')
+  var door = doorBtn.dataset.door
+  var slug = '{{room_details.name}}'
+  
+  doorBtn.addEventListener('click', ()=> {
+    var url = '{% url 'rollcall:door' %}'
+    console.log(door)
+    console.log(slug)
+    fetch(url , {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'X-CSRFToken': csrftoken,
+      },
+      body:JSON.stringify({'action' : door,'slug':slug})
+    })
+
+    .then((response) => {
+      return response.json()
+    })
+
+    .then((data) => {
+      location.reload();
+
+
+    })
+  })
+</script>
+
+{% endblock %}
+
+
+
+

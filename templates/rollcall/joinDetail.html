@@ -1,3 +1,6 @@
+{% extends 'rollcall/base.html' %}
+
+{% block content %}
 <script type="text/javascript">
   function getCookie(name) {
     let cookieValue = null;
@@ -17,13 +20,27 @@
   const csrftoken = getCookie("csrftoken");
 </script>
 
-{{room.major.name}} {{room.year.name}} {{room.subject.subject}}
-{{room.teacher.name}}
+<div class="joinDetailContainer">
+  <div class="joinDetail shadow">
+    <h2>Room Detail</h2>
+    <h4>Major - {{room.major.name}}</h4>
+    <h4>Year - {{room.year.name}}</h4>
+    <h4>Subject - {{room.subject.subject}}</h4>
+    <h4>Leatured by - {{room.teacher.name}}</h4>
+    <div>
+   
+      <a href="joined"> <button id="join" data-join="join" class="joinBtn">Join</button></a>
+    
+    <a href="{% url 'rollcall:home' %}"><button class="joinCalcel">Calcel</button></a> 
+  </div>
+  </div>
+  
+</div>
 
-<button id="join" data-join="join">
-  <a href="joined">Join</a>
-</button>
-<button>calcel</button>
+  
+
+
+
 
 <script type="text/javascript">
   const roomId = {{room.id}}
@@ -54,3 +71,4 @@
   	})
   })
 </script>
+{% endblock %}

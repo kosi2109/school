@@ -1,3 +1,15 @@
-You are joined
+{% extends 'rollcall/base.html' %}
 
-<a href="{% url 'rollcall:home' %}">Home</a>
+{% block content %}
+
+<div style="width: 100vw;height: 90vh;display: flex;justify-content: center;align-items: center;flex-direction: column;">
+	<h2 style="font-size: 1rem;">Successfully Joined...</h2>
+	<a href="{% url 'rollcall:home' %}"><button class="joinCalcel" style="width: 70px;height: 30px;border-radius: 5px;margin: 10px 0;font-size: 0.9rem;">Home</button></a>
+</div>
+
+{% endblock %}
+
+
+
+
+

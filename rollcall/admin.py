@@ -21,7 +21,7 @@ admin.site.register(Subject)
 admin.site.register(Teacher)
 admin.site.register(Student)
 admin.site.register(Join_Room)
-
+admin.site.register(PostArticle)
 
 admin.site.register(UserNew, CustomUserAdmin)
 

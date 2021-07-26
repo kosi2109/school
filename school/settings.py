@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rollcall',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -79,7 +80,7 @@ DATABASES = {
     'default': {
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME': 'rollcall',
+        'NAME': 'school',
 
         'USER': 'postgres',
 
@@ -147,3 +148,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'rollcall.UserNew'
+
+CKEDITOR_CONFIGS = {
+'default': {
+    'width': '100%',
+    'height': '100%',
+          },
+    }

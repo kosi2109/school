@@ -9,8 +9,8 @@ urlpatterns = [
 
 	path('join/',join , name="join"),
 	path('joined/',joined , name="joined"),
-
-
+	path('post/',post , name="post"),
+	path('door/',door , name="door"),
 	path('classDetail/<str:name>/',classDetail , name='classDetail'),
 	path('getStudents/<str:room>/',getStudents , name='getStudents'),
 ]

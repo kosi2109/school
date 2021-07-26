@@ -15,7 +15,7 @@ nav {
 }
 
 .logo {
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 * {
@@ -27,13 +27,7 @@ nav {
 
 body {
   background-color: var(--bg-primary);
-  overflow: hidden;
-}
-.container-fluid {
-  height: 100vh !important;
-  position: relative !important;
-  overflow: hidden;
-  margin: 0 !important;
+  overflow-x: hidden;
 }
 
 .menu {
@@ -58,7 +52,11 @@ body {
   align-items: center;
   color: var(--text-primary);
   cursor: pointer;
-  font-size: 1rem;
+  
+}
+
+.menu div h5{
+  font-size: 0.8rem;
 }
 
 .profile {
@@ -72,6 +70,7 @@ body {
   transition: all 0.2s ease;
   width: 100%;
   height: 100vh;
+  display: none;
 }
 
 .pf {
@@ -83,20 +82,26 @@ body {
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  position: absolute;
+  display: none;
+  top: 0;
+  left: 0;
+  overflow: none;
 }
 
 .home {
   opacity: 0;
   pointer-events: none;
-  position: absolute;
   height: 80vh;
   transition: all 0.2s ease;
+  display: none;
 }
 
 .active {
   position: absolute;
   pointer-events: all;
   opacity: 1;
+  display: block;
 }
 
 .post-container {
@@ -134,8 +139,11 @@ body {
   align-items: center;
   height: 80%;
   border-radius: 15px;
-  position: absolute;
   flex-direction: column;
+  position: absolute;
+  top: 63%;
+  left: 50%;
+  transform: translate(-50%,-50%);
 }
 
 .pf-detail-container {
@@ -214,34 +222,36 @@ body {
   font-size: 0.8rem;
   cursor: pointer;
   z-index: 100;
+  transition: all 0.5s ease;
+}
+
+.create-btn:hover{
+  background-color: var(--main);
+  color: var(--text-primary);
 }
 
 .form-lee {
   position: absolute;
   width: 100%;
-  height: 80vh;
+  height: 100vh;
   background-color: #866ec7ad;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  clip-path: circle(100px at 0% 150%);
-  -webkit-clip-path: circle(100px at 0% 150%);
-  transition: all 0.5s ease !important;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 100;
   opacity: 1 !important;
+  top: -100%;
+  left: 0;
+  transition: all 0.5s ease;
 }
 
 .form-lee.fade {
-  clip-path: circle(2500px at -90% 80%);
-  -webkit-clip-path: circle(2500px at -90% 80%);
-  opacity: 1 !important;
+  top: 0;
+  transition: all 0.5s ease;
 }
 
 .form-lee form {
-  width: 100%;
+  width: 50%;
   height: 60%;
   display: flex;
   justify-content: space-around;
@@ -270,6 +280,93 @@ body {
   z-index: 20;
 }
 
+.joinDetailContainer{
+  width: 100vw;
+  height: 90vh;
+  top: 10vh;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.joinDetail{
+  width: 90%;
+  height: 90%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 10px;
+  color: #252525;
+  
+}
+
+.joinDetail div{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  height: 10%;
+}
+
+.joinDetail div button{
+  width: 100px;
+  height: 40px;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+.joinBtn{
+  border: 2px solid var(--main);
+  background-color: transparent;
+
+}
+.joinCalcel{
+  background-color: var(--main);
+  border: 2px solid #482ff7;
+  color: var(--text-primary)
+}
+.joinDetail h2{
+  border-bottom: 2px solid #252525;
+  padding: 5px;
+}
+
+.joinDetail h2 , .joinDetail h4{
+  font-size: 1rem;
+}
+
+.logoutBtn{
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  width: 60px;
+  height: 35px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  color: var(--main);
+  font-size: 1rem;
+}
+
+.joinedStudent{
+  width: 100%;
+  position: relative;
+  height: 70px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 2px solid #252525 !important;
+}
+
+.brc h3{
+  font-size: 1.5rem;
+}
+
+
+.joinedStudent h4{
+  font-size: 1rem;
+  text-align: center;
+  width: 33%;
+}
 
 
 @media screen and (min-width: 370px){
@@ -285,7 +382,12 @@ body {
     height: 400px;
   }
 }
-
+@media screen and (min-width: 768px){
+  .brc{
+    border-right: 2px solid #866ec7;
+    
+  }
+}
 @media screen and (min-width: 992px) {
   .profile-container {
     flex-direction: row;
@@ -293,6 +395,7 @@ body {
   .pf-detail-container {
     width: 50%;
   }
+  
   
   .post-container {
     width: 50%;
@@ -306,4 +409,5 @@ body {
     height: 440px;
 
   }
+
 }

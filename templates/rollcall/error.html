@@ -1,4 +1,10 @@
+{% extends 'rollcall/base.html' %}
 
-<h1>{{messages}}</h1>
+{% block content %}
 
-<a href="{% url 'rollcall:home' %}">Home</a>
+	<div style="width: 100vw;height: 90vh;display: flex;justify-content: center;align-items: center;flex-direction: column;">
+		<h2 style="font-size: 1rem;">{{messages}}</h2>
+		<a href="{% url 'rollcall:home' %}"><button class="joinCalcel" style="width: 70px;height: 30px;border-radius: 5px;margin: 10px 0;font-size: 0.9rem;">Home</button></a>
+	</div>
+
+{% endblock %}

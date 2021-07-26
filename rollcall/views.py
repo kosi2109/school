@@ -107,7 +107,6 @@ def post(request):
 	form = PostForm()
 	if request.method == 'POST' or None:
 		form = PostForm(request.POST)
-		print(request.POST)
 		if form.is_valid():
 			form.save()
 			return redirect('rollcall:home')
